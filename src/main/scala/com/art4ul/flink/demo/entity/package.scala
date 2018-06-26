@@ -2,9 +2,9 @@ package com.art4ul.flink.demo
 
 package object entity {
 
-  case class Temp(time: Long,
-                  deviceId: String,
-                  value: Double)
+  case class Sensor(time: Long,
+                    deviceId: String,
+                    value: Double)
 
   case class UserSensor(time: Long,
                         userId: String,

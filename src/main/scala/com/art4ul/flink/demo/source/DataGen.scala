@@ -23,15 +23,15 @@ object DataGen {
     DeviceDataGen( "Device4", (t => 20 * Math.sin(t) + 50))
   )
 
-  def gen(x: Double): Seq[Temp] = {
+  def gen(x: Double): Seq[Sensor] = {
     val t = System.currentTimeMillis()
     gens.map { case DeviceDataGen(deviceId, g) =>
-      Temp(t, deviceId, g(x))
+      Sensor(t, deviceId, g(x))
     }
   }
 }
 
-class DataGen extends SourceFunction[Temp] with CheckpointedFunction {
+class DataGen extends SourceFunction[Sensor] with CheckpointedFunction {
 
   @transient
   private var checkpointedState: ListState[DataGenState] = _
@@ -43,7 +43,7 @@ class DataGen extends SourceFunction[Temp] with CheckpointedFunction {
 
   import Thread._
 
-  override def run(ctx: SourceFunction.SourceContext[Temp]): Unit = {
+  override def run(ctx: SourceFunction.SourceContext[Sensor]): Unit = {
     while (isRunning) {
       val time = System.currentTimeMillis()
       val events = DataGen.gen(state.t)

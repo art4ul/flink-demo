@@ -1,6 +1,6 @@
 package com.art4ul.flink.demo.window
 
-import com.art4ul.flink.demo.entity.{Metric, UserSensor, Temp}
+import com.art4ul.flink.demo.entity.{Metric, UserSensor, Sensor}
 import org.apache.flink.api.common.functions.AggregateFunction
 
 case class MeanState(sum: Double = 0,
@@ -22,7 +22,7 @@ class MeanAggregate extends AggregateFunction[UserSensor, MeanState, Metric] {
 
   override def getResult(accumulator: MeanState): Metric = {
     val mean = accumulator.sum / accumulator.count
-    Metric(s"mean.${accumulator.userId}", mean, accumulator.minTime)
+    Metric(s"${accumulator.userId}.mean", mean, accumulator.minTime)
   }
 
   override def merge(a: MeanState, b: MeanState): MeanState = {

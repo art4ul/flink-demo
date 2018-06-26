@@ -9,7 +9,7 @@ import org.apache.flink.streaming.api.functions.co.RichCoFlatMapFunction
 import org.apache.flink.util.Collector
 
 
-class UserMapper[C <: Cmd] extends RichCoFlatMapFunction[Temp, C, UserSensor] {
+class UserMapper[C <: Cmd] extends RichCoFlatMapFunction[Sensor, C, UserSensor] {
 
   var mapping: MapState[String, String] = _
 
@@ -21,7 +21,7 @@ class UserMapper[C <: Cmd] extends RichCoFlatMapFunction[Temp, C, UserSensor] {
     mapping = getRuntimeContext.getMapState(descriptor)
   }
 
-  override def flatMap1(v: Temp, out: Collector[UserSensor]): Unit = {
+  override def flatMap1(v: Sensor, out: Collector[UserSensor]): Unit = {
     val user = Option(mapping.get(v.deviceId))
     user.foreach { userId =>
       val result = UserSensor(time = v.time,

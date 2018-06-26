@@ -17,6 +17,8 @@ object Demo3 {
       RestartStrategies.fixedDelayRestart(100,
         Time.of(10, TimeUnit.SECONDS))
     )
+    env.enableCheckpointing(1000)
+
     val src = env.addSource(new DataGen())
     val sink = new InfluxSink
 
